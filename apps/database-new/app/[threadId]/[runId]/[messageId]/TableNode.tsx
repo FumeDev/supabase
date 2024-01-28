@@ -3,6 +3,16 @@ import { Handle, NodeProps } from 'reactflow'
 import { cn } from 'ui'
 import { NODE_WIDTH } from './SchemaFlow.constants'
 
+const generateHandle = (id: string, position: 'target' | 'source', positionClass: string) => (
+  <Handle
+    type={position}
+    id={id}
+    position={position}
+    className={positionClass}
+    aria-label={`${position} handle for ${id}`} // Enhance accessibility
+  />
+);
+
 export type TableNodeData = {
   name: string;
   isForeign: boolean;
@@ -21,7 +31,19 @@ const HIDDEN_NODE_CONNECTOR = '!h-px !w-px !min-w-0 !min-h-0 !cursor-grab !borde
 const ITEM_HEIGHT = 'h-[22px]';
 const FLEX_SHRINK_TEXT_LIGHT = 'flex-shrink-0 text-light';
 
+/**
+ * `TableNode` component represents a visual node within a schema flow diagram.
+ * It can render both local and foreign table nodes, displaying table names, columns,
+ * and various column properties using icons. The component supports interactive elements
+ * for establishing connections between nodes within the schema flow.
+ * 
+ * It can gracefully handle `null` or `undefined` `data`, ensuring the component's robustness
+ * in various usage scenarios.
+ */
 const TableNode = ({ data, targetPosition, sourcePosition }: NodeProps<TableNodeData>) => {
+  if (!data) {
+    return null;  // Return `null` if `data` is null or undefined.
+  }
   if (data.isForeign) {
     return <ForeignTableNode data={data} targetPosition={targetPosition} />;
   }
@@ -33,14 +55,7 @@ const ForeignTableNode = ({ data, targetPosition }) => (
   <div className="rounded-lg">
     <header className="text-[0.5rem] leading-5 font-bold px-2 text-center bg-brand text-gray-300">
       {data.name}
-      {targetPosition && (
-        <Handle
-          type="target"
-          id={data.name}
-          position={targetPosition}
-          className={cn(HIDDEN_NODE_CONNECTOR, '!left-0')}
-        />
-      )}
+{targetPosition && generateHandle(data.name, 'target', cn(HIDDEN_NODE_CONNECTOR, '!left-0'))}
     </header>
   </div>
 );
@@ -104,22 +119,8 @@ const LocalTableNode = ({ data, targetPosition, sourcePosition }) => (
             {column.format}
           </span>
         </div>
-        {targetPosition && (
-          <Handle
-            type="target"
-            id={column.id}
-            position={targetPosition}
-            className={cn(HIDDEN_NODE_CONNECTOR, '!left-0')}
-          />
-        )}
-        {sourcePosition && (
-          <Handle
-            type="source"
-            id={column.id}
-            position={sourcePosition}
-            className={cn(HIDDEN_NODE_CONNECTOR, '!right-0')}
-          />
-        )}
+{targetPosition && generateHandle(column.id, 'target', cn(HIDDEN_NODE_CONNECTOR, '!left-0'))}
+{sourcePosition && generateHandle(column.id, 'source', cn(HIDDEN_NODE_CONNECTOR, '!right-0'))}
       </div>
     ))}
   </div>
