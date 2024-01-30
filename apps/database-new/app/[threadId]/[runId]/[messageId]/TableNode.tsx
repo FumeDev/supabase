@@ -3,6 +3,11 @@ import { Handle, NodeProps } from 'reactflow'
 import { cn } from 'ui'
 import { NODE_WIDTH } from './SchemaFlow.constants'
 
+// Constants for node styles
+const HIDDEN_NODE_CONNECTOR = '!h-px !w-px !min-w-0 !min-h-0 !cursor-grab !border-0 !opacity-0';
+const ITEM_HEIGHT = 'h-[22px]';
+const FLEX_SHRINK_TEXT_LIGHT = 'flex-shrink-0 text-light';
+
 const generateHandle = (id: string, position: 'target' | 'source', positionClass: string) => (
   <Handle
     type={position}
@@ -26,10 +31,6 @@ export type TableNodeData = {
     format: string;
   }>;
 };
-
-const HIDDEN_NODE_CONNECTOR = '!h-px !w-px !min-w-0 !min-h-0 !cursor-grab !border-0 !opacity-0';
-const ITEM_HEIGHT = 'h-[22px]';
-const FLEX_SHRINK_TEXT_LIGHT = 'flex-shrink-0 text-light';
 
 /**
  * `TableNode` component represents a visual node within a schema flow diagram.
@@ -62,6 +63,19 @@ const ForeignTableNode = ({ data, targetPosition }) => (
 
 
 
+/**
+ * Renders a local table node within a schema flow diagram.
+ *
+ * This component is responsible for visually representing a local table, including its name, columns,
+ * and their respective properties. It supports interactive elements such as handles, allowing connections
+ * between nodes within the schema flow based on the table's relationships.
+ *
+ * @param {TableNodeData} data - An object containing the table's name, an indication if it is a foreign table,
+ * and an array of column objects detailing the column name, properties and format.
+ * @param {'top' | 'bottom' | 'left' | 'right' | undefined} targetPosition - Designates the position of the target handle within the node for incoming connections.
+ * @param {'top' | 'bottom' | 'left' | 'right' | undefined} sourcePosition - Specifies the position of the source handle within the node for outgoing connections.
+ * @returns A JSX element representing the local table node with appropriately placed handles for establishing connections, if `targetPosition` or `sourcePosition` are provided.
+ */
 const LocalTableNode = ({ data, targetPosition, sourcePosition }) => (
   <div
     className="border border-[0.5px] overflow-hidden rounded-[4px] shadow-sm"
