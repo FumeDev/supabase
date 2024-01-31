@@ -8,6 +8,16 @@ const HIDDEN_NODE_CONNECTOR = '!h-px !w-px !min-w-0 !min-h-0 !cursor-grab !borde
 const ITEM_HEIGHT = 'h-[22px]';
 const FLEX_SHRINK_TEXT_LIGHT = 'flex-shrink-0 text-light';
 
+/**
+ * Creates a `Handle` component for `TableNode` used for establishing node connections in a schema flow diagram.
+ * This handle is visualized based on its `position` within the parent node and customized with specific classes for styling.
+ * 
+ * @param {string} id - A unique identifier for the handle, typically related to the column or table it represents.
+ * @param {'target' | 'source'} position - Specifies the handle type, determining whether it's for incoming (`target`) or outgoing (`source`) connections.
+ * @param {string} positionClass - Additional CSS classes to customize the appearance and positioning of the handle in the UI.
+ * 
+ * @returns A `Handle` component configured with an `aria-label` for accessibility and designated styling for integration into the schema flow diagram.
+ */
 const generateHandle = (id: string, position: 'target' | 'source', positionClass: string) => (
   <Handle
     type={position}
