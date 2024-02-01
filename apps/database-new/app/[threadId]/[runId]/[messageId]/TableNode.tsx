@@ -3,6 +3,22 @@ import { Handle, NodeProps } from 'reactflow'
 import { cn } from 'ui'
 import { NODE_WIDTH } from './SchemaFlow.constants'
 
+
+// Constants for node styles
+const HIDDEN_NODE_CONNECTOR = '!h-px !w-px !min-w-0 !min-h-0 !cursor-grab !border-0 !opacity-0';
+const ITEM_HEIGHT = 'h-[22px]';
+const FLEX_SHRINK_TEXT_LIGHT = 'flex-shrink-0 text-light';
+
+const generateHandle = (id: string, position: 'target' | 'source', positionClass: string) => (
+  <Handle
+    type={position}
+    id={id}
+    position={position}
+    className={positionClass}
+    aria-label={`${position} handle for ${id}`} // Enhance accessibility
+  />
+);
+
 export type TableNodeData = {
   name: string
   isForeign: boolean
